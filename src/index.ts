@@ -27,6 +27,6 @@ app.use(express.json());
   await setupRouter(app);
 
   app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
+    console.log(`API running in http://localhost:${PORT}`);
   });
 })();

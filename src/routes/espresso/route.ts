@@ -4,7 +4,7 @@ import express from "express";
 const router = express.Router();
 
 /*
- * Hello world
+ * Espresso make
  */
 router.get("/", EspressoController.make);
 

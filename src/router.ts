@@ -25,6 +25,13 @@ const setupRouter = async (app: express.Express) => {
   };
 
   await registerRoutes(basePath);
+
+  /* not found route */
+  app.use((req, res) => {
+    res.status(404).json({
+      message: "not found",
+    });
+  });
 };
 
 export default setupRouter;
