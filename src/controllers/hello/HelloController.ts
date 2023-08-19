@@ -1,8 +1,6 @@
-import { Request, Response } from "express";
 import { BaseController } from "@/controllers";
-
 class HelloController extends BaseController {
-  public async hello(req: Request, res: Response) {
+  public async hello(req: Req, res: Res) {
     return res.status(200).json({
       message: "Hello World!",
     });
