@@ -1,3 +1,8 @@
+if (!process.env.PORT) {
+  logger.error("No PORT specified in .env file");
+  process.exit(1);
+}
+
 /*
  * Imports & config
  */
@@ -5,12 +10,12 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
-import setupRouter from "./router";
+import logger from "@/utils/logger";
+import config from "@/lib/config";
 
-if (!process.env.PORT) {
-  console.error("You must specify a server port");
-  process.exit(1);
-}
+import RouterManager from "@/lib/router";
+import { FileRouterAdapter } from "@/lib/router/adapters/router-file-adapter";
+import { ExpressRouterProvider } from "@/lib/router/providers/router-express-provider";
 
 const PORT: number = parseInt(process.env.PORT, 10);
 const app = express();
@@ -23,10 +28,14 @@ app.use(cors());
 app.use(express.json());
 
 (async () => {
-  console.log("Setting up routes...");
-  await setupRouter(app);
+  logger.log("Setting up routes...");
+
+  await new RouterManager(
+    new FileRouterAdapter(config.routesPath),
+    new ExpressRouterProvider(app),
+  ).setup();
 
   app.listen(PORT, () => {
-    console.log(`API running in http://localhost:${PORT}`);
+    logger.log(`API running in http://localhost:${PORT}`);
   });
 })();
